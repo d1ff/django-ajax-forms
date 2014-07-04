@@ -1,6 +1,5 @@
 from django import forms
 from django.http import HttpResponse
-from django.utils import simplejson
 from django.views.decorators.http import require_POST
 from django.forms.formsets import BaseFormSet
 from django.views.generic.edit import BaseFormView
@@ -12,6 +11,7 @@ from django.views.generic.edit import ModelFormMixin
 from django.views.generic.edit import TemplateResponseMixin
 from django.views.generic.edit import ProcessFormView
 from django.views.generic.edit import SingleObjectMixin
+import json
 
 from ajax_forms.utils import LazyEncoder
 
@@ -98,7 +98,7 @@ class AjaxInvalidFormMixin(JSONResponseMixin, TemplateResponseMixin):
             errors = dict([(key, val) for key, val in errors.iteritems() if key in fields])
 
         final_errors = {}
-        for key, val in errors.iteritems():
+        for key, val in errors.items():
             if '__all__' in key:
                 final_errors[key] = val
             elif not isinstance(formfields[key].field, forms.FileField):
